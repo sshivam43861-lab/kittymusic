@@ -180,7 +180,7 @@ class Inline:
             [
                 self.ikb(
                     text="Owner ♛",
-                    url="https://t.me/pixieiii",
+                    url="https://t.me/deadlock93",
                     style=ButtonStyle.SUCCESS,
                 ),
                 self.ikb(
