@@ -1,3 +1,4 @@
+
 # ==========================================================
 # Copyright (c) 2026 ArtistBots
 # All Rights Reserved.
@@ -82,7 +83,7 @@ class Config:
         # Images
         self.DEFAULT_THUMB: str = getenv("DEFAULT_THUMB", "https://litter.catbox.moe/pi6brrhl2f82zrwv.jpg")
         self.PING_IMG: str = getenv("PING_IMG", "https://files.catbox.moe/fjbj4g.jpg")
-        self.START_IMG: str = getenv("START_IMG", "https://i.imgur.com/7UVV7Em.jpeg")
+        self.START_IMG: str = getenv("START_IMG", "https://files.catbox.moe/vnl0a4.jpg")
         self.RADIO_IMG: str = getenv("RADIO_IMG", "https://litter.catbox.moe/pi6brrhl2f82zrwv.jpg")
 
         # Moderation
