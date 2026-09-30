@@ -20,7 +20,7 @@ from pyrogram import filters, types
 from Elevenyts import app, tune, boot, config, lang
 from Elevenyts.helpers import buttons
 
-PING_IMG = "https://files.catbox.moe/fjbj4g.jpg"
+PING_IMG = "https://i.imgur.com/fFGpWwg.jpeg"
 
 
 @app.on_message(filters.command(["alive", "ping"]) & ~app.bl_users)
