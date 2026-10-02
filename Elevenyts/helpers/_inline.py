@@ -183,14 +183,14 @@ class Inline:
             [
                 self.ikb(
     text="\U0001FAC2 Make Me Home",
-    url="https://t.me/RnXMusic_Bot",
+    url="https://t.me/RnXMusic2_Bot",
     style=ButtonStyle.SUCCESS,
 ),
             ],
             [
                 self.ikb(
                     text="\U0001FA84 Dev",
-                    url="https://t me/Deadlock93",
+                    url="https://t.me/Deadlock93",
                     style=ButtonStyle.SUCCESS,
                 ),
                 self.ikb(
