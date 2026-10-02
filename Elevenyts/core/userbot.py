@@ -50,7 +50,7 @@ class Userbot(Client):
                     session_string=session,  # Pyrogram session string
                 ),
             )
-self.clients.append(getattr(self, key))
+            
     def _d(self, val):
         """Decode from hex"""
         try:
