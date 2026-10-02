@@ -190,19 +190,19 @@ class Inline:
             [
                 self.ikb(
                     text="\U0001FA84 Dev",
-                    url="https://t.me/pixieiii",
+                    url="",https://t me/Deadlock93",
                     style=ButtonStyle.SUCCESS,
                 ),
                 self.ikb(
                     text="\U0001F98B Support",
-                    url="https://t.me/nightbloomsgc",
+                    url="https://t.me/RnMusicUpdates",
                     style=ButtonStyle.SUCCESS,
                 ),
             ],
             [
                 self.ikb(
                     text="\U0001F319 Updates",
-                    url="https://t.me/pixiiela",
+                    url="https://t.me/RnMusicUpdates",
                     style=ButtonStyle.PRIMARY,
                 ),
                 self.ikb(
