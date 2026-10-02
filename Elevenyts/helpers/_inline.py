@@ -182,10 +182,10 @@ class Inline:
         rows = [
             [
                 self.ikb(
-                    text="\U0001FAC2 Take Me Home",
-                    url=f"https://t.me/{app.username}",
-                    style=ButtonStyle.SUCCESS,
-                ),
+    text="\U0001FAC2 Make Me Home",
+    url="https://t.me/RnXMusic_Bot",
+    style=ButtonStyle.SUCCESS,
+),
             ],
             [
                 self.ikb(
