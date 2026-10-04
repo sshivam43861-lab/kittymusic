@@ -19,39 +19,33 @@ async def handle_join_request(client, request: ChatJoinRequest):
     if not user:
         return
 
-    # Group name automatically
+    # Get the actual group name
     group_name = request.chat.title or "this group"
 
-    # RnxMusic2Bot start link
+    # RnxMusic2Bot verification link
     deep_link = "https://t.me/Rnxmusic2_bot?start=verify"
 
-    # Verify button
+    # Inline Verify button
     markup = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton(
-                    "「 ✓ ᴠᴇʀɪғʏ ɴᴏᴡ 」",
+                    "✅ ᴠᴇʀɪғʏ ɴᴏᴡ",
                     url=deep_link
                 )
             ]
         ]
     )
 
-    # Message
+    # Verification message
     text = (
-        "╭─━━━━━━━━━━━━━━━━━━━━─╮\n"
-        "        ʀɴ x ᴍᴜsɪᴄ 🕊\n"
-        "╰─━━━━━━━━━━━━━━━━━━━━─╯\n\n"
-        "        ᴀᴄᴄᴇss ʀᴇǫᴜᴇsᴛᴇᴅ\n\n"
-        "ʏᴏᴜ'ᴠᴇ ʀᴇǫᴜᴇsᴛᴇᴅ ᴀᴄᴄᴇss ᴛᴏ\n"
-        f"<b>{group_name}</b>\n\n"
-        "ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ɪs ᴄᴜʀʀᴇɴᴛʟʏ ᴡᴀɪᴛɪɴɢ ғᴏʀ\n"
-        "ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ. ᴄᴏᴍᴘʟᴇᴛᴇ ᴛʜᴇ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ\n"
-        "ʙᴇʟᴏᴡ ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ ʏᴏᴜʀ ᴇɴᴛʀʏ.\n\n"
-        "╭─━━━━━━━━━━━━━━━━━━━━─╮\n"
-        "   🔐 ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ ʀᴇǫᴜɪʀᴇᴅ\n"
-        "╰─━━━━━━━━━━━━━━━━━━━━─╯\n\n"
-        "✦ sᴀғᴇ • ғᴀsᴛ • ᴏɴᴇ ᴛᴀᴘ"
+        "╭─━━━━━━━━━━━━━━─╮\n"
+        "      ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ\n"
+        "╰─━━━━━━━━━━━━━━─╯\n"
+        f"ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ᴛᴏ ᴊᴏɪɴ\n"
+        f"<b>{group_name}</b> ʜᴀs ʙᴇᴇɴ ʀᴇᴄᴇɪᴠᴇᴅ.\n\n"
+        "ᴛᴀᴘ ʙᴇʟᴏᴡ ᴛᴏ ᴠᴇʀɪғʏ\n"
+        "ᴀɴᴅ ᴄᴏɴᴛɪɴᴜᴇ."
     )
 
     try:
