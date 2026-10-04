@@ -1,50 +1,51 @@
 # ==========================================================
-# Copyright (c) 2026 ArtistBots
-# All Rights Reserved.
-#
-# Project      : ArtistBots API Telegram Music Bot
-# Powered By   : Artist
-# Type         : API Based Telegram Music Bot
-#
-# Bot          : @ArtistApibot
-# Channel      : https://t.me/artistbots
-# GitHub       : https://github.com/elevenyts
-#
-# Unauthorized copying, modification, or redistribution
-# of this source code without permission is prohibited.
+# Join Request Verify Handler
 # ==========================================================
-from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboardMarkup
+
+from pyrogram.types import (
+    ChatJoinRequest,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+)
 
 from Elevenyts import app
 
 
 @app.on_chat_join_request()
-async def handle_join_request(_, request: ChatJoinRequest) -> None:
-    """When someone requests to join a group, DM them a Verify button
-    that opens the bot and sends /start. Requires the bot to be a group
-    admin with the "Invite Users" permission — Telegram then allows the
-    bot to message the requester directly even if they've never started
-    the bot before (Bot API 5.5+).
+async def handle_join_request(client, request: ChatJoinRequest):
 
-    The bot does NOT approve or decline the join request itself — that
-    stays entirely up to the group's own admins/settings. This only
-    nudges the user to start the bot."""
     user = request.from_user
+
     if not user:
         return
 
+    # RnxMusic2Bot start link
     deep_link = "https://t.me/Rnxmusic2_bot?start=verify"
 
+    # Verify button
     markup = InlineKeyboardMarkup(
-        [[InlineKeyboardButton(text="Verify", url=deep_link)]]
+        [
+            [
+                InlineKeyboardButton(
+                    "✅ Verify",
+                    url=deep_link
+                )
+            ]
+        ]
     )
 
     try:
-        target_chat_id = getattr(request, "user_chat_id", None) or user.id
-        await app.send_message(
-            target_chat_id,
-            "<u>Click on the button below to verify yourself.</u>",
-            reply_markup=markup,
+        await client.send_message(
+            chat_id=user.id,
+            text=(
+                "<b>👋 Welcome!</b>\n\n"
+                "You have requested to join the group.\n\n"
+                "Click the button below to verify yourself."
+            ),
+            reply_markup=markup
         )
-    except Exception:
-        pass
+
+        print(f"✅ Verify message sent to user: {user.id}")
+
+    except Exception as e:
+        print(f"❌ Join Request DM Error: {e}")
