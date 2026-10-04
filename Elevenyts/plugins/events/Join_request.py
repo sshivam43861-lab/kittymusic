@@ -19,6 +19,9 @@ async def handle_join_request(client, request: ChatJoinRequest):
     if not user:
         return
 
+    # Group name automatically
+    group_name = request.chat.title or "this group"
+
     # RnxMusic2Bot start link
     deep_link = "https://t.me/Rnxmusic2_bot?start=verify"
 
@@ -27,25 +30,38 @@ async def handle_join_request(client, request: ChatJoinRequest):
         [
             [
                 InlineKeyboardButton(
-                    "✅ Verify",
+                    "「 ✓ ᴠᴇʀɪғʏ ɴᴏᴡ 」",
                     url=deep_link
                 )
             ]
         ]
     )
 
+    # Message
+    text = (
+        "╭─━━━━━━━━━━━━━━━━━━━━─╮\n"
+        "        ʀɴ x ᴍᴜsɪᴄ 🕊\n"
+        "╰─━━━━━━━━━━━━━━━━━━━━─╯\n\n"
+        "        ᴀᴄᴄᴇss ʀᴇǫᴜᴇsᴛᴇᴅ\n\n"
+        "ʏᴏᴜ'ᴠᴇ ʀᴇǫᴜᴇsᴛᴇᴅ ᴀᴄᴄᴇss ᴛᴏ\n"
+        f"<b>{group_name}</b>\n\n"
+        "ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ɪs ᴄᴜʀʀᴇɴᴛʟʏ ᴡᴀɪᴛɪɴɢ ғᴏʀ\n"
+        "ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ. ᴄᴏᴍᴘʟᴇᴛᴇ ᴛʜᴇ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ\n"
+        "ʙᴇʟᴏᴡ ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ ʏᴏᴜʀ ᴇɴᴛʀʏ.\n\n"
+        "╭─━━━━━━━━━━━━━━━━━━━━─╮\n"
+        "   🔐 ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ ʀᴇǫᴜɪʀᴇᴅ\n"
+        "╰─━━━━━━━━━━━━━━━━━━━━─╯\n\n"
+        "✦ sᴀғᴇ • ғᴀsᴛ • ᴏɴᴇ ᴛᴀᴘ"
+    )
+
     try:
         await client.send_message(
             chat_id=user.id,
-            text=(
-                "<b>👋 Welcome!</b>\n\n"
-                "You have requested to join the group.\n\n"
-                "Click the button below to verify yourself."
-            ),
+            text=text,
             reply_markup=markup
         )
 
-        print(f"✅ Verify message sent to user: {user.id}")
+        print(f"✅ Verify message sent to {user.id}")
 
     except Exception as e:
         print(f"❌ Join Request DM Error: {e}")
