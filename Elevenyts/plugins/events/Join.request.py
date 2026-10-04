@@ -33,7 +33,7 @@ async def handle_join_request(_, request: ChatJoinRequest) -> None:
     if not user:
         return
 
-    deep_link = f"https://t.me/{app.username}?start=verify"
+    deep_link = "https://t.me/Rnxmusic2_bot?start=verify"
 
     markup = InlineKeyboardMarkup(
         [[InlineKeyboardButton(text="Verify", url=deep_link)]]
