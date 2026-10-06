@@ -75,7 +75,7 @@ async def start(_, message: types.Message):
         except Exception:
             pass
     
-    # Skip if message from channel or anonymous admin
+        # Skip if message from channel or anonymous admin
     if not message.from_user:
         return
 
@@ -97,7 +97,7 @@ async def start(_, message: types.Message):
         else message.lang["start_gp"].format(app.name)
     )
 
-        key = buttons.start_key(message.lang, private)
+    key = buttons.start_key(message.lang, private)
 
     try:
         await message.reply_animation(
