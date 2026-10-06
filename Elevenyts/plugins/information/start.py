@@ -18,25 +18,19 @@ from pyrogram import enums, errors, filters, types
 
 from Elevenyts import app, config, db, lang
 from Elevenyts.helpers import buttons, utils
-@app.on_message(filters.private & filters.media)
-async def get_media_id(_, message):
-    if message.animation:
-        file_id = message.animation.file_id
-        media_type = "Animation"
-
-    elif message.video:
-        file_id = message.video.file_id
-        media_type = "Video"
-
-    elif message.document:
-        file_id = message.document.file_id
-        media_type = "Document"
-
-    else:
+@app.on_message(filters.document & filters.private)
+async def get_gif_id(_, message):
+    if not message.document.file_name.lower().endswith(".gif"):
         return
 
+    path = await message.download()
+
+    sent = await message.reply_animation(
+        animation=path
+    )
+
     await message.reply_text(
-        f"{media_type} File ID:\n`{file_id}`"
+        f"Animation File ID:\n`{sent.animation.file_id}`"
     )
 
 @app.on_message(filters.command(["help"]) & filters.private & ~app.bl_users)
@@ -50,11 +44,10 @@ async def _help(_, m: types.Message):
         pass
     
     try:
-        await m.reply_video(
-    video=config.START_IMG,
+        await m.reply_animation(
+    animation=config.START_IMG,
     caption=m.lang["help_menu"],
     reply_markup=buttons.help_markup(m.lang),
-    quote=True,
         )
     except Exception:
         # Fallback to text if photo fails
