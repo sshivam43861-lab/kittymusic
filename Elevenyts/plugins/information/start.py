@@ -52,9 +52,8 @@ async def _help(_, m: types.Message):
     except Exception:
         # Fallback to text if photo fails
         await m.reply_text(
-            text=m.lang["help_menu"],
-            reply_markup=buttons.help_markup(m.lang),
-            quote=True,
+    text=m.lang["help_menu"],
+    reply_markup=buttons.help_markup(m.lang),
         )
 
 
@@ -99,19 +98,18 @@ async def start(_, message: types.Message):
     )
 
     key = buttons.start_key(message.lang, private)
-    try:
-        await message.reply_animation(
-    animation=config.START_IMG,
-    caption=_text,
-    reply_markup=key,
-        )
-    except errors.ChatSendPhotosForbidden:
-        # If photos are not allowed, send text only
-        await message.reply_text(
-            text=_text,
-            reply_markup=key,
-            quote=not private,
-        )
+
+try:
+    await message.reply_animation(
+        animation=config.START_IMG,
+        caption=_text,
+        reply_markup=key,
+    )
+except Exception:
+    await message.reply_text(
+        text=_text,
+        reply_markup=key,
+    )
 
     # For private chats, add user to database if new
     if private:
