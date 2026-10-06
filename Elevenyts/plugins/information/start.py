@@ -31,11 +31,11 @@ async def _help(_, m: types.Message):
         pass
     
     try:
-        await m.reply_photo(
-            photo=config.START_IMG,  # Use same image as start command
-            caption=m.lang["help_menu"],
-            reply_markup=buttons.help_markup(m.lang),
-            quote=True,
+        await m.reply_video(
+    video=config.START_IMG,
+    caption=m.lang["help_menu"],
+    reply_markup=buttons.help_markup(m.lang),
+    quote=True,
         )
     except Exception:
         # Fallback to text if photo fails
@@ -88,11 +88,10 @@ async def start(_, message: types.Message):
 
     key = buttons.start_key(message.lang, private)
     try:
-        await message.reply_photo(
-            photo=config.START_IMG,
-            caption=_text,
-            reply_markup=key,
-        
+        await message.reply_video(
+    video=config.START_IMG,
+    caption=_text,
+    reply_markup=key,
         )
     except errors.ChatSendPhotosForbidden:
         # If photos are not allowed, send text only
