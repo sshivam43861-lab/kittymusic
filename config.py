@@ -82,7 +82,7 @@ class Config:
         # Images
         self.DEFAULT_THUMB: str = getenv("DEFAULT_THUMB", "https://litter.catbox.moe/pi6brrhl2f82zrwv.jpg")
         self.PING_IMG: str = getenv("PING_IMG", "https://files.catbox.moe/zuqiue.jpg")
-        self.START_IMG: str = getenv("START_IMG", "https://image-link.edgeone.app/v/1791300984868-lkoxr0.mp4")
+        self.START_IMG: str = getenv("START_IMG", "BAACAgUAAxkBAAIFt2rFHZUvUhRiCkbunh-EDly9iAd1AAI-JAACCDgpVp_fw_NSfTYfHgQ")
         self.RADIO_IMG: str = getenv("RADIO_IMG", "https://litter.catbox.moe/pi6brrhl2f82zrwv.jpg")
 
         # Moderation
