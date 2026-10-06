@@ -97,19 +97,19 @@ async def start(_, message: types.Message):
         else message.lang["start_gp"].format(app.name)
     )
 
-    key = buttons.start_key(message.lang, private)
+        key = buttons.start_key(message.lang, private)
 
-try:
-    await message.reply_animation(
-        animation=config.START_IMG,
-        caption=_text,
-        reply_markup=key,
-    )
-except Exception:
-    await message.reply_text(
-        text=_text,
-        reply_markup=key,
-    )
+    try:
+        await message.reply_animation(
+            animation=config.START_IMG,
+            caption=_text,
+            reply_markup=key,
+        )
+    except Exception:
+        await message.reply_text(
+            text=_text,
+            reply_markup=key,
+        )
 
     # For private chats, add user to database if new
     if private:
