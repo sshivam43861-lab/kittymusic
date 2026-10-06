@@ -18,7 +18,11 @@ from pyrogram import enums, errors, filters, types
 
 from Elevenyts import app, config, db, lang
 from Elevenyts.helpers import buttons, utils
-
+@app.on_message(filters.video & filters.private)
+async def get_video_id(_, message):
+    await message.reply_text(
+        f"File ID:\n`{message.video.file_id}`"
+    )
 
 @app.on_message(filters.command(["help"]) & filters.private & ~app.bl_users)
 @lang.language()
