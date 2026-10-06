@@ -18,10 +18,25 @@ from pyrogram import enums, errors, filters, types
 
 from Elevenyts import app, config, db, lang
 from Elevenyts.helpers import buttons, utils
-@app.on_message(filters.animation & filters.private)
-async def get_animation_id(_, message):
+@app.on_message(filters.private & filters.media)
+async def get_media_id(_, message):
+    if message.animation:
+        file_id = message.animation.file_id
+        media_type = "Animation"
+
+    elif message.video:
+        file_id = message.video.file_id
+        media_type = "Video"
+
+    elif message.document:
+        file_id = message.document.file_id
+        media_type = "Document"
+
+    else:
+        return
+
     await message.reply_text(
-        f"Animation File ID:\n`{message.animation.file_id}`"
+        f"{media_type} File ID:\n`{file_id}`"
     )
 
 @app.on_message(filters.command(["help"]) & filters.private & ~app.bl_users)
