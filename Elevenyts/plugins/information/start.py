@@ -1,5 +1,3 @@
-
-
 # ==========================================================
 # Copyright (c) 2026 ArtistBots
 # All Rights Reserved.
@@ -47,6 +45,9 @@ def parse_custom_emojis(text):
 
 @app.on_message(filters.document & filters.private)
 async def get_gif_id(_, message):
+    if not message.document.file_name:
+        return
+
     if not message.document.file_name.lower().endswith(".gif"):
         return
 
@@ -120,13 +121,17 @@ async def start(_, message: types.Message):
             animation=config.START_IMG,
             caption=_text,
             caption_entities=entities,
+            parse_mode=None,
             reply_markup=key,
+            reply_to_message_id=message.id,
         )
     except Exception:
         await message.reply_text(
             text=_text,
             entities=entities,
+            parse_mode=None,
             reply_markup=key,
+            reply_to_message_id=message.id,
         )
 
     if private:
