@@ -45,15 +45,16 @@ async def _help(_, m: types.Message):
     
     try:
         await m.reply_animation(
-    animation=config.START_IMG,
-    caption=m.lang["help_menu"],
-    reply_markup=buttons.help_markup(m.lang),
+            animation=config.START_IMG,
+            caption=m.lang["help_menu"],
+            reply_markup=buttons.help_markup(m.lang),
+            parse_mode=enums.ParseMode.HTML,
         )
     except Exception:
-        # Fallback to text if photo fails
         await m.reply_text(
-    text=m.lang["help_menu"],
-    reply_markup=buttons.help_markup(m.lang),
+            text=m.lang["help_menu"],
+            reply_markup=buttons.help_markup(m.lang),
+            parse_mode=enums.ParseMode.HTML,
         )
 
 
@@ -104,11 +105,13 @@ async def start(_, message: types.Message):
             animation=config.START_IMG,
             caption=_text,
             reply_markup=key,
+            parse_mode=enums.ParseMode.HTML,
         )
     except Exception:
         await message.reply_text(
             text=_text,
             reply_markup=key,
+            parse_mode=enums.ParseMode.HTML,
         )
 
     # For private chats, add user to database if new
