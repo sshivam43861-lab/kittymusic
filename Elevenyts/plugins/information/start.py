@@ -18,6 +18,32 @@ from pyrogram import enums, errors, filters, types
 
 from Elevenyts import app, config, db, lang
 from Elevenyts.helpers import buttons, utils
+
+def add_custom_emoji_entities(text, emoji_map):
+    entities = []
+
+    for emoji, emoji_id in emoji_map:
+        offset = 0
+
+        while True:
+            offset = text.find(emoji, offset)
+
+            if offset == -1:
+                break
+
+            entities.append(
+                types.MessageEntity(
+                    type=enums.MessageEntityType.CUSTOM_EMOJI,
+                    offset=len(text[:offset].encode("utf-16-le")) // 2,
+                    length=len(emoji.encode("utf-16-le")) // 2,
+                    custom_emoji_id=str(emoji_id),
+                )
+            )
+
+            offset += len(emoji)
+
+    return entities
+    
 @app.on_message(filters.document & filters.private)
 async def get_gif_id(_, message):
     if not message.document.file_name.lower().endswith(".gif"):
@@ -100,19 +126,40 @@ async def start(_, message: types.Message):
 
     key = buttons.start_key(message.lang, private)
 
+    emoji_map = [
+        ("🌟", "5206285830666076912"),
+        ("😎", "6100624791947977185"),
+        ("🎀", "5242311354919963946"),
+        ("🤩", "6116411090273310066"),
+        ("🌟", "5206173079184624061"),
+    ]
+
+    # Convert emoji HTML tags to plain emoji before applying entities
+    import re
+
+    _text = re.sub(
+        r'<emoji id="(\d+)">(.*?)</emoji>',
+        r'\2',
+        _text,
+    )
+
+    entities = add_custom_emoji_entities(_text, emoji_map)
+    
+
     try:
         await message.reply_animation(
             animation=config.START_IMG,
             caption=_text,
+            caption_entities=entities,
             reply_markup=key,
-            parse_mode=enums.ParseMode.HTML,
         )
     except Exception:
         await message.reply_text(
             text=_text,
+            entities=entities,
             reply_markup=key,
-            parse_mode=enums.ParseMode.HTML,
         )
+        
 
     # For private chats, add user to database if new
     if private:
