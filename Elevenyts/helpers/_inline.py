@@ -256,41 +256,17 @@ class Inline:
         )
 
     def play_queued(
-        self, chat_id: int, item_id: str, _text: str
-    ) -> types.InlineKeyboardMarkup:
-        return self.ikm(
-            [
-                [
-                    self.ikb(
-                        text="♫ 𝐏‌ℓᴀʏ 𝐍‌σω ♫",
-                        callback_data=f"controls force {chat_id} {item_id}",
-                        style=ButtonStyle.PRIMARY,
-                    ),
-                ],
-                [
-                    self.ikb(
-                        text="♫ 𝐑‌єѕυᴍє ♫",
-                        callback_data=f"controls resume {chat_id} q",
-                        style=ButtonStyle.PRIMARY,
-                    ),
-                    self.ikb(
-                        text="♫ 𝐏‌ᴀυѕє ♫",
-                        callback_data=f"controls pause {chat_id} q",
-                        style=ButtonStyle.PRIMARY,
-                    ),
-                    self.ikb(
-                        text="♫ 𝐒‌κɪᴘ ♫",
-                        callback_data=f"controls skip {chat_id} q",
-                        style=ButtonStyle.PRIMARY,
-                    ),
-                    self.ikb(
-                        text="♫ 𝐒‌ᴛσᴘ ♫",
-                        callback_data=f"controls stop {chat_id} q",
-                        style=ButtonStyle.PRIMARY,
-                    ),
-                ],
-            ]
-        )
+    self, chat_id: int, item_id: str, _text: str
+) -> types.InlineKeyboardMarkup:
+    return self.ikm(
+        [[
+            self.ikb(
+                text="▷ 𝐏‌ℓᴀʏ 𝐍‌σω",
+                callback_data=f"controls force {chat_id} {item_id}",
+                style=ButtonStyle.PRIMARY,
+            )
+        ]]
+    )
 
     def queue_markup(
         self, chat_id: int, _text: str, playing: bool
@@ -335,8 +311,8 @@ class Inline:
         rows = [
             [
                 self.ikb(
-                    text="🫂 𝐌‌ᴀκє 𝐌‌є 𝐇‌σᴍє",
-                    url="https://t.me/RnXMusic2_Bot",
+                    text="𝐀‌ᴅᴅ 𝐓‌σ 𝐆‌ʀσυᴘ",
+                    url=f"https://t.me/{app.username}?startgroup=true",
                     style=ButtonStyle.PRIMARY,
                 ),
             ],
