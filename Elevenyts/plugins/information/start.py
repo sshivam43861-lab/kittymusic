@@ -19,6 +19,33 @@ from pyrogram import enums, errors, filters, types
 from Elevenyts import app, config, db, lang
 from Elevenyts.helpers import buttons, utils
 
+CUSTOM_EMOJI_IDS = {
+    "🌟": "5206285830666076912",
+    "😎": "6100624791947977185",
+    "🎀": "5242311354919963946",
+    "🤩": "6118538967395605278",
+}
+
+def make_custom_emoji_entities(text):
+    entities = []
+    for emoji, emoji_id in CUSTOM_EMOJI_IDS.items():
+        start = 0
+        while True:
+            index = text.find(emoji, start)
+            if index == -1:
+                break
+            offset = len(text[:index].encode("utf-16-le")) // 2
+            length = len(emoji.encode("utf-16-le")) // 2
+            entities.append(types.MessageEntity(
+                type=enums.MessageEntityType.CUSTOM_EMOJI,
+                offset=offset,
+                length=length,
+                custom_emoji_id=emoji_id,
+            ))
+            start = index + len(emoji)
+    return sorted(entities, key=lambda entity: entity.offset)
+
+
 
 @app.on_message(filters.command(["help"]) & filters.private & ~app.bl_users)
 @lang.language()
@@ -87,17 +114,31 @@ async def start(_, message: types.Message):
     )
 
     key = buttons.start_key(message.lang, private)
+    if private:
+        _text = _text.replace("🕊️", "😎").replace("✨", "🤩")
+    entities = make_custom_emoji_entities(_text) if private else []
+    media = await db.cache.find_one({"_id": "start_welcome_media"}) if private else None
     try:
-        await message.reply_photo(
-            photo=config.START_IMG,
-            caption=_text,
-            reply_markup=key,
-        
-        )
-    except errors.ChatSendPhotosForbidden:
-        # If photos are not allowed, send text only
+        if private and media and media.get("type") == "video":
+            await message.reply_video(
+                video=media["file_id"],
+                caption=_text,
+                caption_entities=entities,
+                reply_markup=key,
+            )
+        else:
+            photo = media.get("file_id") if private and media and media.get("type") == "photo" else config.START_IMG
+            await message.reply_photo(
+                photo=photo,
+                caption=_text,
+                caption_entities=entities,
+                reply_markup=key,
+            )
+    except Exception as e:
+        print(f"Start media error: {e}")
         await message.reply_text(
             text=_text,
+            entities=entities,
             reply_markup=key,
             quote=not private,
         )

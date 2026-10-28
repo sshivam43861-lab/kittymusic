@@ -18,6 +18,7 @@ from pyrogram.errors import ChatAdminRequired, ChannelPrivate
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from Elevenyts import app, config
+from Elevenyts.helpers.admin_reminder import track_group
 
 GROUP_IMG = "https://files.catbox.moe/4qgc5d.jpg"
 
@@ -45,6 +46,7 @@ async def new_chat_member(_, message: types.Message):
 
     for member in message.new_chat_members:
         if member.id == app.id:
+            track_group(message.chat.id)
             chat = message.chat
             chat_name = chat.title
             chat_id = chat.id
@@ -74,7 +76,7 @@ async def new_chat_member(_, message: types.Message):
                 chat_link = "❌ ᴜɴᴀʙʟᴇ ᴛᴏ ɢᴇᴛ ʟɪɴᴋ"
 
             # Logger notification (internal — keeps existing format)
-            logger_text = f"""<blockquote>🟢 <b>𝐈𝐒𝐇𝐐 ✘ 𝐌𝐮𝐬𝐢𝐜 ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ</b></blockquote>
+            logger_text = f"""<blockquote>🟢 <b>𝐑𝐍 𝐗 𝐌𝐔𝐒𝐈𝐂 ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ</b></blockquote>
 
 <blockquote>
 🔖 <b>ᴄʜᴀᴛ ɴᴀᴍᴇ:</b> {chat_name}
@@ -89,7 +91,7 @@ async def new_chat_member(_, message: types.Message):
             # Group welcome message (public — Ishq branding)
             group_text = (
                 f"♡ 𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐅𝐨𝐫 𝐀𝐝𝐝𝐢𝐧𝐠 𝐌𝐞 ♡\n\n"
-                f"🎵 𐙚 𝐈𝐒𝐇𝐐 ✘ 𝐌𝐮𝐬𝐢𝐜 ᥫ᭡\n\n"
+                f"🎵 𐙚 𝐑𝐍 𝐗 𝐌𝐔𝐒𝐈𝐂 ᥫ᭡\n\n"
                 f"🥀 𝐑𝐞𝐚𝐝𝐲 𝐓𝐨 𝐏𝐥𝐚𝐲 𝐘𝐨𝐮𝐫 𝐅𝐚𝐯𝐨𝐮𝐫𝐢𝐭𝐞 𝐌𝐮𝐬𝐢𝐜.\n\n"
                 f"𝐓𝐡𝐚𝐧𝐤 𝐲𝐨𝐮 𝐟𝐨𝐫 𝐚𝐝𝐝𝐢𝐧𝐠 𝐦𝐞 𝐭𝐨 {chat_name} ♡"
             )
@@ -151,7 +153,7 @@ async def left_chat_member(_, message: types.Message):
         except Exception:
             chat_link = "❌ ᴜɴᴀʙʟᴇ ᴛᴏ ɢᴇᴛ ʟɪɴᴋ"
 
-        text = f"""<blockquote>🔴 <b>𝐈𝐒𝐇𝐐 ✘ 𝐌𝐮𝐬𝐢𝐜 ʀᴇᴍᴏᴠᴇᴅ ꜰʀᴏᴍ ᴀ ɢʀᴏᴜᴘ</b></blockquote>
+        text = f"""<blockquote>🔴 <b>𝐑𝐍 𝐗 𝐌𝐔𝐒𝐈𝐂 ʀᴇᴍᴏᴠᴇᴅ ꜰʀᴏᴍ ᴀ ɢʀᴏᴜᴘ</b></blockquote>
 
 <blockquote>
 🔖 <b>ᴄʜᴀᴛ ɴᴀᴍᴇ:</b> {chat_name}

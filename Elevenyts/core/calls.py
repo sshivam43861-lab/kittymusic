@@ -791,16 +791,6 @@ class TgCall(PyTgCalls):
 
     def _autoplay_prefetch(self, chat_id: int) -> None:
         """While a song plays, already find + download the next autoplay song
-        so there is no silence / failure at the moment the song ends."""
-        if not autoplay.is_enabled(chat_id) or autoplay.limit_reached(chat_id):
-            return
-        task = self._ap_tasks.get(chat_id)
-        if task and not task.done():
-            return
-        try:
-            self._ap_tasks[chat_id] = asyncio.create_task(self._autoplay_get(chat_id))
-        except Exception as e:
-            logger.debug(f"Autoplay prefetch not started for {chat_id}: {e}")
                   so there is no silence / failure at the moment the song ends."""
         if not autoplay.is_enabled(chat_id) or autoplay.limit_reached(chat_id):
             return

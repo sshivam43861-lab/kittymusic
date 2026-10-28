@@ -15,22 +15,27 @@
 # ==========================================================
 
 import asyncio
+import logging
 
 from pyrogram import enums, errors, types
 
 from Elevenyts import app, config, db, queue, yt
+from Elevenyts.helpers.admin_reminder import track_group
+
+logger = logging.getLogger(__name__)
 
 
 def checkUB(play):
     async def wrapper(_, m: types.Message):
         async def safe_reply(text):
-            """Safely send reply, return None if chat doesn't allow messages"""
+            """Send a reply and log failures instead of hiding them."""
             try:
                 return await m.reply_text(text)
-            except (errors.ChatWriteForbidden, errors.ChatSendPlainForbidden):
-                # Chat doesn't allow text messages - silently return
-                return None
             except Exception:
+                logger.exception(
+                    "Could not send /play reply in chat %s",
+                    m.chat.id,
+                )
                 return None
         
         if not m.from_user:
@@ -40,6 +45,30 @@ def checkUB(play):
         if m.chat.type != enums.ChatType.SUPERGROUP:
             await safe_reply(m.lang["play_chat_invalid"])
             return await app.leave_chat(m.chat.id)
+        # Require the main bot to be an administrator before processing /play.
+        try:
+            bot_member = await app.get_chat_member(m.chat.id, app.id)
+            if bot_member.status not in (
+                enums.ChatMemberStatus.ADMINISTRATOR,
+                enums.ChatMemberStatus.OWNER,
+            ):
+                track_group(m.chat.id)
+                await safe_reply(
+                    "୨୧・🌷 ʜᴇʏʏ ᴀᴅᴍɪɴs! 🥹💗\n\n"
+                    "ᴍᴜᴊʜᴇ ᴀᴅᴍɪɴ ʙᴀɴᴀ ᴅᴏ ɴᴀ! 🎀\n"
+                    "ᴘʜɪʀ ʜᴜᴍ sᴀᴀᴛʜ ᴍᴇɪɴ ᴍᴜsɪᴄ sᴜɴᴇɴɢᴇ! 🎧🌸"
+                )
+                return
+        except errors.ChatAdminRequired:
+            await safe_reply(
+                "୨୧・🌷 ʜᴇʏʏ ᴀᴅᴍɪɴs! 🥹💗\n\n"
+                "ᴍᴜᴊʜᴇ ᴀᴅᴍɪɴ ʙᴀɴᴀ ᴅᴏ ɴᴀ! 🎀\n"
+                "ᴘʜɪʀ ʜᴜᴍ sᴀᴀᴛʜ ᴍᴇɪɴ ᴍᴜsɪᴄ sᴜɴᴇɴɢᴇ! 🎧🌸"
+            )
+            return
+        except Exception:
+            logger.exception("Could not check main bot admin status in chat %s", m.chat.id)
+            return
 
         if not m.reply_to_message and (
             len(m.command) < 2 or (len(m.command)
@@ -104,13 +133,10 @@ def checkUB(play):
                         return
             except errors.ChatAdminRequired:
                 await safe_reply(
-                    f"<blockquote><b>🔐 Bot Admin Required</b></blockquote>\n\n"
-                    f"<blockquote>To play music in this chat, I need to be an <b>administrator</b>.\n\n"
-                    f"<b>Required permissions:</b>\n"
-                    f"• Manage Voice Chats\n"
-                    f"• Invite Users via Link\n"
-                    f"• Delete Messages\n\n"
-                    f"Please promote me as admin with the required permissions.</blockquote>"
+                    "୨୧・🌷 ʜᴇʏʏ ᴅᴇᴀʀ ᴀᴅᴍɪɴs! 🥹💗\n\n"
+                    "ᴍᴀɪɴ ᴀʙʜɪ ᴀᴅᴍɪɴ ɴᴀʜɪ ʜᴜɴ ɴᴀ… 🥺🎀\n"
+                    "ᴘʟᴇᴀsᴇ ᴍᴜᴊʜᴇ ᴀᴅᴍɪɴ ʙᴀɴᴀ ᴅᴏ ɴᴀ! 🐻‍❄️🫶🏻\n"
+                    "ᴘʜɪʀ ʜᴜᴍ sᴀᴀᴛʜ ᴍᴇɪɴ ᴘʏᴀʀɪ sɪ ᴍᴜsɪᴄ ᴠɪʙᴇs ʙᴀɴᴀʏᴇɴɢᴇ! 🎧🌸💞"
                 )
                 return
             except errors.UserNotParticipant:

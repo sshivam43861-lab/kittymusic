@@ -376,6 +376,58 @@ async def _send_broadcast(
                 except:
                     pass  # If can't get chat info, try to send anyway
 
+            # Preserve original Telegram message when no custom text is supplied.
+            if media_message and not text:
+                source_ids = (
+                    [msg.id for msg in media_group]
+                    if media_group
+                    else [media_message.id]
+                )
+
+                if "-copy" in flags:
+                    sent_items = []
+                    for source_id in source_ids:
+                        copied = await app.copy_message(
+                            chat_id=chat_id,
+                            from_chat_id=media_message.chat.id,
+                            message_id=source_id,
+                        )
+                        sent_items.append(copied)
+                    sent_message = sent_items[0] if sent_items else None
+                else:
+                    forwarded = await app.forward_messages(
+                        chat_id=chat_id,
+                        from_chat_id=media_message.chat.id,
+                        message_ids=source_ids,
+                    )
+                    sent_message = (
+                        forwarded[0]
+                        if isinstance(forwarded, list) and forwarded
+                        else forwarded
+                    )
+
+                if sent_message and chat_id in groups:
+                    if "-pin" in flags:
+                        try:
+                            await sent_message.pin(disable_notification=True)
+                            pinned_count += 1
+                        except Exception:
+                            pass
+                    elif "-pinloud" in flags:
+                        try:
+                            await sent_message.pin(disable_notification=False)
+                            pinned_count += 1
+                        except Exception:
+                            pass
+
+                if chat_id in groups:
+                    success_groups += 1
+                else:
+                    success_users += 1
+
+                await asyncio.sleep(0.3)
+                continue
+
             # Priority 1: If media_group exists (album), send as media group
             if media_group:
                 sent_message = None

@@ -204,18 +204,22 @@ async def play_hndlr(
     
     try:
         sent = await safe_reply(m, m.lang["play_searching"].format(play_emoji))
+        if sent is None:
+            logger.warning(
+                "Play aborted: could not send searching message in chat %s",
+                m.chat.id,
+            )
+            return
     except FloodWait as e:
+        logger.warning("FloodWait while starting play in chat %s: %s", m.chat.id, e.value)
         await asyncio.sleep(e.value)
-        try:
-            sent = await safe_reply(m, m.lang["play_searching"].format(play_emoji))
-        except FloodWait as e2:
-            # If still flood wait, wait longer and give up gracefully
-            await asyncio.sleep(e2.value)
-            return  # Abort silently
-        except Exception:
-            return  # Abort silently
+        sent = await safe_reply(m, m.lang["play_searching"].format(play_emoji))
+        if sent is None:
+            logger.warning("Play aborted after FloodWait in chat %s", m.chat.id)
+            return
     except Exception:
-        return  # If we can't even send initial message, abort
+        logger.exception("Failed to start /play in chat %s", m.chat.id)
+        return
     
     mention = m.from_user.mention
     media = tg.get_media(m.reply_to_message) if m.reply_to_message else None

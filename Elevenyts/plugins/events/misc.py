@@ -22,6 +22,7 @@ from pyrogram import enums, filters, types
 
 from Elevenyts import tune, app, config, db, lang, logger, queue, tasks, userbot, yt
 from Elevenyts.helpers import buttons
+from Elevenyts.helpers.admin_reminder import reminder_loop
 
 
 @app.on_message(filters.regex(r"^/") & ~filters.service, group=-1)
@@ -307,3 +308,6 @@ if config.AUTO_LEAVE:
     tasks.append(asyncio.create_task(auto_leave()))
 tasks.append(asyncio.create_task(track_time()))
 tasks.append(asyncio.create_task(update_timer()))
+
+# Eight-hour reminders for tracked non-admin groups
+tasks.append(asyncio.create_task(reminder_loop()))

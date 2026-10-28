@@ -105,3 +105,31 @@ async def autoplay_info_callback(_, cq: CallbackQuery) -> None:
         pass
     await cq.answer()
   
+
+
+@app.on_callback_query(filters.regex(r"^autoplay_toggle (-?\d+)$"))
+async def autoplay_toggle_callback(_, cq: CallbackQuery) -> None:
+    if not cq.from_user or not cq.message:
+        return await cq.answer()
+
+    chat_id = int(cq.matches[0].group(1))
+    if cq.message.chat.id != chat_id:
+        return await cq.answer("This button belongs to another chat.", show_alert=True)
+
+    if not await _can_manage(chat_id, cq.from_user.id):
+        return await cq.answer(
+            "Only admins and authorized users can change autoplay.",
+            show_alert=True,
+        )
+
+    enabled = autoplay.toggle(chat_id)
+    status = "🟢 ON" if enabled else "🔴 OFF"
+
+    try:
+        from Elevenyts.helpers import buttons
+        keyboard = buttons.controls(chat_id)
+        await cq.message.edit_reply_markup(reply_markup=keyboard)
+    except Exception:
+        pass
+
+    await cq.answer(f"Autoplay is now {status}.")
